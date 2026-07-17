@@ -1,0 +1,10 @@
+image:
+  repository: mp30/hyper-ops
+  tag: "3"
+  pullPolicy: IfNotPresent
+
+config:
+  APP_ENV: PROD
+
+ingress:
+  host: prod.hyper.local
