@@ -1,8 +1,10 @@
 image:
+  repository: mp30/hyper-ops
   tag: "1"
-
-ingress:
-  host: dev.hyper.local
+  pullPolicy: IfNotPresent
 
 config:
   APP_ENV: development
+
+ingress:
+  host: dev.hyper.local
