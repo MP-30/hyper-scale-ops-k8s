@@ -1,0 +1,8 @@
+image:
+  tag: "1"
+
+ingress:
+  host: dev.hyper.local
+
+config:
+  APP_ENV: development
