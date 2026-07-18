@@ -8,29 +8,27 @@ metadata:
   labels:
     {{- include "hyper-scale-ops.labels" . | nindent 4 }}
 
-spec:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 
+spec:
   ingressClassName: {{ .Values.ingress.className }}
 
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ include "hyper-scale-ops.fullname" . }}-tls
+
   rules:
-
     - host: {{ .Values.ingress.host }}
-
       http:
-
         paths:
-
           - path: {{ .Values.ingress.path }}
             pathType: {{ .Values.ingress.pathType }}
-
             backend:
-
               service:
-
                 name: {{ include "hyper-scale-ops.fullname" . }}
-
                 port:
-
                   number: {{ .Values.service.port }}
 
 {{- end }}

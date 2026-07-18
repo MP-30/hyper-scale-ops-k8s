@@ -19,18 +19,18 @@ spec:
       labels:
         {{- include "hyper-scale-ops.selectorLabels" . | nindent 8 }}
 
-      annotations:
+{{/*      annotations:*/}}
 
-        vault.hashicorp.com/agent-inject: "true"
+{{/*        vault.hashicorp.com/agent-inject: "true"*/}}
 
-        vault.hashicorp.com/role: "hyper-role"
+{{/*        vault.hashicorp.com/role: "hyper-role"*/}}
 
-        vault.hashicorp.com/agent-inject-secret-config: "secret/data/hyper"
+{{/*        vault.hashicorp.com/agent-inject-secret-config: "secret/data/hyper"*/}}
 
-        vault.hashicorp.com/agent-inject-template-config: |
-            {{`{{- with secret "secret/data/hyper" -}}
-            DATABASE_URL={{ .Data.data.DATABASE_URL }}
-            {{- end }}`}}
+{{/*        vault.hashicorp.com/agent-inject-template-config: |*/}}
+{{/*            {{`{{- with secret "secret/data/hyper" -}}*/}}
+{{/*            DATABASE_URL={{ .Data.data.DATABASE_URL }}*/}}
+{{/*            {{- end }}`}}*/}}
 
     spec:
       serviceAccountName: {{ include "hyper-scale-ops.fullname" . }}
@@ -45,9 +45,15 @@ spec:
           ports:
             - containerPort: {{ .Values.service.targetPort }}
 
+{{/*          envFrom:*/}}
+{{/*            - configMapRef:*/}}
+{{/*                name: {{ include "hyper-scale-ops.fullname" . }}*/}}
           envFrom:
             - configMapRef:
                 name: {{ include "hyper-scale-ops.fullname" . }}
+
+            - secretRef:
+                name: hyper-secret
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
