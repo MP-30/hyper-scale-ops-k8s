@@ -4,7 +4,7 @@ image:
   pullPolicy: IfNotPresent
 
 config:
-  APP_ENV: PROD
+  APP_ENV: prod
 
 ingress:
   host: prod.hyper.local
