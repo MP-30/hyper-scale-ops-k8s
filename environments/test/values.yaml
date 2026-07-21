@@ -7,4 +7,4 @@ config:
   APP_ENV: Test
 
 ingress:
-  host: test.hyper.local
+  host: test.adityalive.tech
