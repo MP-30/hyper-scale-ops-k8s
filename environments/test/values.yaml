@@ -1,6 +1,6 @@
 image:
   repository: mp30/hyper-ops
-  tag: "10"
+  tag: "11"
   pullPolicy: IfNotPresent
 
 config:
