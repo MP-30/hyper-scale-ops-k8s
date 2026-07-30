@@ -34,16 +34,61 @@ spec:
 
     spec:
       serviceAccountName: {{ include "hyper-scale-ops.fullname" . }}
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+                  {{ include "hyper-scale-ops.selectorLabels" . | nindent 14 }}
+# image tag will be override by values.yaml
       containers:
-
         - name: hyper-scale-ops
-
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+
+            capabilities:
+              drop:
+                - ALL
 
           ports:
             - containerPort: {{ .Values.service.targetPort }}
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - sh
+                  - -c
+                  - sleep 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            timeoutSeconds: 5
+            failureThreshold: 3
 
 {{/*          envFrom:*/}}
 {{/*            - configMapRef:*/}}

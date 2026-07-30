@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+
+metadata:
+  name: {{ include "hyper-scale-ops.fullname" . }}
+
+spec:
+  minAvailable: 1
+
+  selector:
+    matchLabels:
+      {{- include "hyper-scale-ops.selectorLabels" . | nindent 6 }}
