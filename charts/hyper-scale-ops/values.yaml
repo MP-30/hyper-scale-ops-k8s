@@ -1,5 +1,5 @@
 # Number of pod replicas
-replicaCount: 1
+replicaCount: 3
 
 # Docker image configuration
 image:
@@ -43,11 +43,11 @@ labels: {}
 
 probes:
   liveness:
+    initialDelaySeconds: 25
+    periodSeconds: 40
+  readiness:
     initialDelaySeconds: 15
     periodSeconds: 20
-  readiness:
-    initialDelaySeconds: 5
-    periodSeconds: 10
 
 # Pod annotations
 annotations: {}

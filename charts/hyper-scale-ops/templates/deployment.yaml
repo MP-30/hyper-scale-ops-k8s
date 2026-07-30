@@ -78,8 +78,8 @@ spec:
               port: {{ .Values.service.targetPort }}
             initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
-            timeoutSeconds: 5
-            failureThreshold: 3
+            timeoutSeconds: 15
+            failureThreshold: 13
 
           readinessProbe:
             httpGet:
@@ -87,8 +87,8 @@ spec:
               port: {{ .Values.service.targetPort }}
             initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
             periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
-            timeoutSeconds: 5
-            failureThreshold: 3
+            timeoutSeconds: 25
+            failureThreshold: 23
 
 {{/*          envFrom:*/}}
 {{/*            - configMapRef:*/}}
